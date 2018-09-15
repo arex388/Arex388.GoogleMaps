@@ -137,7 +137,7 @@ namespace Arex388.GoogleMaps {
 						return await message.Content.ReadAsStringAsync();
 					}
 				}
-			} catch (HttpRequestException e) {
+			} catch (HttpRequestException) {
 				return null;
 			}
 		}
