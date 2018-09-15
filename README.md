@@ -26,7 +26,10 @@ Available as a NuGet package [here][2].
 
 **Get Distance Matrix**
 
-    var distanceMatrix = await googleMaps.GetDistanceMatrixAsync("East Capitol St NE & First St SE, Washington, DC 20004", "1600 Pennsylvania Ave NW, Washington, DC 20500");
+    var distanceMatrix = await googleMaps.GetDistanceMatrixAsync(
+        "East Capitol St NE & First St SE, Washington, DC 20004",
+        "1600 Pennsylvania Ave NW, Washington, DC 20500"
+    );
 
 [0]:https://developers.google.com/maps/documentation
 [1]:https://arex388.com
