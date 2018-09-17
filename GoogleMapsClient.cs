@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,8 +13,8 @@ namespace Arex388.GoogleMaps {
 		public GoogleMapsClient(
 			HttpClient client,
 			string key) {
-			Client = client;
-			Key = key;
+			Client = client ?? throw new ArgumentNullException(nameof(Client));
+			Key = key ?? throw new ArgumentNullException(nameof(Key));
 		}
 
 		public async Task<DistanceMatrixResponse> GetDistanceMatrixAsync(
@@ -40,7 +41,7 @@ namespace Arex388.GoogleMaps {
 
 		public async Task<DistanceMatrixResponse> GetDistanceMatrixAsync(
 			DistanceMatrixRequest request) {
-			if (request == null) {
+			if (request is null) {
 				return null;
 			}
 
@@ -67,7 +68,7 @@ namespace Arex388.GoogleMaps {
 
 		public async Task<ElevationResponse> GetElevationAsync(
 			ElevationRequest request) {
-			if (request == null) {
+			if (request is null) {
 				return null;
 			}
 
@@ -85,7 +86,7 @@ namespace Arex388.GoogleMaps {
 
 		public async Task<GeocodeResponse> GetGeocodeAsync(
 			GeocodeRequest request) {
-			if (request == null) {
+			if (request is null) {
 				return null;
 			}
 
@@ -110,7 +111,7 @@ namespace Arex388.GoogleMaps {
 
 		public async Task<TimeZoneResponse> GetTimeZoneAsync(
 			TimeZoneRequest request) {
-			if (request == null) {
+			if (request is null) {
 				return null;
 			}
 
