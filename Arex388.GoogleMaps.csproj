@@ -10,7 +10,8 @@
     <PackageProjectUrl>https://github.com/arex388/Arex388.GoogleMaps</PackageProjectUrl>
     <RepositoryUrl>https://github.com/arex388/Arex388.GoogleMaps</RepositoryUrl>
     <PackageTags>google-maps arex388</PackageTags>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,9 +21,6 @@
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\Users\Alex\.nuget\packages\newtonsoft.json\11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Console">
-      <HintPath>..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.1.0\ref\netcoreapp2.1\System.Console.dll</HintPath>
     </Reference>
   </ItemGroup>
 
