@@ -19,25 +19,21 @@ namespace Arex388.GoogleMaps {
 
 		public async Task<DistanceMatrixResponse> GetDistanceMatrixAsync(
 			string origin,
-			string destination) {
-			return await GetDistanceMatrixAsync(new DistanceMatrixRequest {
-				Destinations = new[] {
-					destination
-				},
-				Origins = new[] {
-					origin
-				}
-			});
-		}
+			string destination) => await GetDistanceMatrixAsync(new DistanceMatrixRequest {
+			Destinations = new[] {
+				destination
+			},
+			Origins = new[] {
+				origin
+			}
+		});
 
 		public async Task<DistanceMatrixResponse> GetDistanceMatrixAsync(
 			IEnumerable<string> origins,
-			IEnumerable<string> destinations) {
-			return await GetDistanceMatrixAsync(new DistanceMatrixRequest {
-				Destinations = destinations,
-				Origins = origins
-			});
-		}
+			IEnumerable<string> destinations) => await GetDistanceMatrixAsync(new DistanceMatrixRequest {
+			Destinations = destinations,
+			Origins = origins
+		});
 
 		public async Task<DistanceMatrixResponse> GetDistanceMatrixAsync(
 			DistanceMatrixRequest request) {
@@ -51,20 +47,16 @@ namespace Arex388.GoogleMaps {
 		}
 
 		public async Task<ElevationResponse> GetElevationAsync(
-			string location) {
-			return await GetElevationAsync(new ElevationRequest {
-				Locations = new[] {
-					location
-				}
-			});
-		}
+			string location) => await GetElevationAsync(new ElevationRequest {
+			Locations = new[] {
+				location
+			}
+		});
 
 		public async Task<ElevationResponse> GetElevationAsync(
-			IEnumerable<string> locations) {
-			return await GetElevationAsync(new ElevationRequest {
-				Locations = locations
-			});
-		}
+			IEnumerable<string> locations) => await GetElevationAsync(new ElevationRequest {
+			Locations = locations
+		});
 
 		public async Task<ElevationResponse> GetElevationAsync(
 			ElevationRequest request) {
@@ -78,11 +70,9 @@ namespace Arex388.GoogleMaps {
 		}
 
 		public async Task<GeocodeResponse> GetGeocodeAsync(
-			string address) {
-			return await GetGeocodeAsync(new GeocodeRequest {
-				Address = address
-			});
-		}
+			string address) => await GetGeocodeAsync(new GeocodeRequest {
+			Address = address
+		});
 
 		public async Task<GeocodeResponse> GetGeocodeAsync(
 			GeocodeRequest request) {
@@ -96,18 +86,14 @@ namespace Arex388.GoogleMaps {
 		}
 
 		public async Task<GeocodeResponse> GetReverseGeocodeAsync(
-			string location) {
-			return await GetGeocodeAsync(new GeocodeRequest {
-				Location = location
-			});
-		}
+			string location) => await GetGeocodeAsync(new GeocodeRequest {
+			Location = location
+		});
 
 		public async Task<TimeZoneResponse> GetTimeZoneAsync(
-			string location) {
-			return await GetTimeZoneAsync(new TimeZoneRequest {
-				Location = location
-			});
-		}
+			string location) => await GetTimeZoneAsync(new TimeZoneRequest {
+			Location = location
+		});
 
 		public async Task<TimeZoneResponse> GetTimeZoneAsync(
 			TimeZoneRequest request) {
