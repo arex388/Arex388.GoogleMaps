@@ -10,12 +10,13 @@
     <PackageProjectUrl>https://github.com/arex388/Arex388.GoogleMaps</PackageProjectUrl>
     <RepositoryUrl>https://github.com/arex388/Arex388.GoogleMaps</RepositoryUrl>
     <PackageTags>google-maps arex388</PackageTags>
-    <Version>1.0.6</Version>
+    <Version>1.0.7</Version>
     <LangVersion>latest</LangVersion>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
