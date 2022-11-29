@@ -1,3 +1,9 @@
+#### 2.1.0 (2022-11-29)
+
+- **Removed:** All `Get*` methods and supporting code.
+
+
+
 #### 2.0.0 (2022-11-28)
 
 This is a major version that overhauls the implementation and deprecates the current method calls. New method implementations are introduced in their place. Cleaned up async implementation. Introduced an interface to use instead of the concrete class. Added a dependency injection extension package.
