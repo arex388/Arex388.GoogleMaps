@@ -1,7 +1,8 @@
 ﻿namespace Arex388.GoogleMaps;
 
-//	2.0.0
+#pragma warning disable CS1591
 public enum ResponseStatus :
+#pragma warning restore CS1591
 	byte {
 	/// <summary>
 	/// The request was cancelled.

@@ -6,7 +6,6 @@ using System.Text.Json.Serialization;
 
 namespace Arex388.GoogleMaps;
 
-//	2.0.0
 /// <summary>
 /// TimeZone feature object.
 /// </summary>
