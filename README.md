@@ -1,47 +1,92 @@
 ﻿# Arex388.GoogleMaps
 
-Google Maps API Implementation in C#
+A C# client for Google Maps API.
 
-Yet another implementation of the Google Maps API. To use, just create an instance of `GoogleMapsClient` and pass in an `HttpClient` instance along with your API key. The original documentation can be found [here][0]. For more information please visit [arex388.com][1].
+Yet another implementation of the Google Maps API. To use, just create an instance of `GoogleMapsClient` and pass in an `HttpClient` instance along with your API key. The original documentation can be found [here](https://developers.google.com/maps/documentation). For more information please visit [arex388.com](https://arex388.com ).
 
-Available as a NuGet package [here][2].
+Available as a NuGet package [here](https://www.nuget.org/packages/Arex388.GoogleMaps ).
 
-    var googleMaps = new GoogleMapsClient(
-        httpClient,
-        "{key}"
-    );
 
-**Get Geocode**
 
-    var geocode = await googleMaps.GetGeocodeAsync(
-        "1600 Pennsylvania Ave NW, Washington, DC 20500"
-    );
+## Important
 
-**Get Reverse Geocoding**
 
-    var reverseGeocode = await googleMaps.GetReverseGeocodeAsync(
-        "38.897675,-77.036547"
-    );
 
-**Get Elevation**
+#### v2.1.0
 
-    var elevation = await googleMaps.GetElevationAsync(
-        "38.897675,-77.036547"
-    );
+Version 2.1.0 is the same as v2.0.0, except it removes all code marked as deprecated in v2.0.0, **so it is a version with breaking changes**.
 
-**Get Time Zone**
 
-    var timeZone = await googleMaps.GetTimeZoneAsync(
-        "38.897675,-77.036547"
-    );
 
-**Get Distance Matrix**
+#### v2.0.0
 
-    var distanceMatrix = await googleMaps.GetDistanceMatrixAsync(
-        "East Capitol St NE & First St SE, Washington, DC 20004",
-        "1600 Pennsylvania Ave NW, Washington, DC 20500"
-    );
+Version 2.0.0 is a rewrite of the client implementation and sets up the package for breaking changes in 2.1.0. Specifically, all `Get*` methods are deprecated and will be removed in 2.1.0. Switch to the new methods as directed to benefit from the memory and performance improvements.
 
-[0]:https://developers.google.com/maps/documentation
-[1]:https://arex388.com
-[2]:https://www.nuget.org/packages/Arex388.GoogleMaps
+
+
+## How to Use
+
+You can either create an instance of `GoogleMapsClient` or inject it using the `IGoogleMapsClient` interface through dependency injection. A dependency injection package is now available to make it easy to do that.
+
+
+
+```c#
+var googleMaps = new GoogleMapsClient(
+    httpClient,
+    "{key}"
+);
+```
+
+
+
+#### Distance Matrix
+
+```c#
+var distanceMatrix = await googleMaps.DistanceMatrixAsync(
+    "1600 Pennsylvania Ave NW, Washington, DC 20500",
+    "East Capitol St NE & First St SE, Washington, DC 20004"
+);
+```
+
+
+
+#### Elevation
+
+```c#
+var elevation = await googleMaps.ElevationAsync(
+    "38.897675,-77.036547"
+);
+```
+
+
+
+#### Geocode
+
+```c#
+var geocode = await googleMaps.GeocodeAsync(
+    "1600 Pennsylvania Ave NW, Washington, DC 20500"
+);
+```
+
+
+
+#### Reverse Geocode
+
+```c#
+var reverseGeocode = await googleMaps.ReverseGeocodeAsync(
+    "38.897675,-77.036547"
+);
+```
+
+
+
+#### Time Zone
+
+```c#
+var timeZone = await googleMaps.TimeZoneAsync(
+    "38.897675,-77.036547"
+);
+```
+
+
+
