@@ -1,3 +1,15 @@
+#### 2.1.2 (2022-11-29)
+
+- **Added:** `GetPointAsync()` extension method on `IGoogleMapsClient` to return the most accurate latitude and longitude point of an address.
+
+
+
+#### 2.1.1 (2022-11-29)
+
+- **Removed:** Packages that were no longer needed.
+
+
+
 #### 2.1.0 (2022-11-29)
 
 - **Removed:** All `Get*` methods and supporting code.
