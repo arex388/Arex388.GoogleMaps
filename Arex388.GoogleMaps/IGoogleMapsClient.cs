@@ -9,6 +9,26 @@ namespace Arex388.GoogleMaps;
 /// </summary>
 public interface IGoogleMapsClient {
 	/// <summary>
+	/// Returns validation results for an address.
+	/// </summary>
+	/// <param name="address">The address to validate.</param>
+	/// <param name="cancellationToken">Optional cancellation token.</param>
+	/// <returns>AddressValidation.Response</returns>
+	Task<AddressValidation.Response> AddressValidationAsync(
+		string address,
+		CancellationToken cancellationToken = default);
+
+	/// <summary>
+	/// Returns validation results for an address.
+	/// </summary>
+	/// <param name="request">The request object.</param>
+	/// <param name="cancellationToken">Optional cancellation token.</param>
+	/// <returns>AddressValidation.Response</returns>
+	Task<AddressValidation.Response> AddressValidationAsync(
+		AddressValidation.Request request,
+		CancellationToken cancellationToken = default);
+
+	/// <summary>
 	/// Returns travel distance and time for a matrix of origins and destinations.
 	/// </summary>
 	/// <param name="origin">The origin address.</param>

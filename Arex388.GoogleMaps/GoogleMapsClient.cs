@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,6 +29,32 @@ public sealed class GoogleMapsClient :
 		_httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
 		_key = key ?? throw new ArgumentNullException(nameof(key));
 	}
+
+	/// <summary>
+	/// Returns validation results for an address.
+	/// </summary>
+	/// <param name="address">The address to validate.</param>
+	/// <param name="cancellationToken">Optional cancellation token.</param>
+	/// <returns>AddressValidation.Response</returns>
+	public Task<AddressValidation.Response> AddressValidationAsync(
+		string address,
+		CancellationToken cancellationToken = default) => AddressValidationAsync(new AddressValidation.Request {
+			Address = new AddressValidation.PostalAddress {
+				AddressLines = new[] {
+					address
+				}
+			}
+		}, cancellationToken);
+
+	/// <summary>
+	/// Returns validation results for an address.
+	/// </summary>
+	/// <param name="request">The request object.</param>
+	/// <param name="cancellationToken">Optional cancellation token.</param>
+	/// <returns>AddressValidation.Response</returns>
+	public Task<AddressValidation.Response> AddressValidationAsync(
+		AddressValidation.Request request,
+		CancellationToken cancellationToken = default) => RequestAsync<AddressValidation.Response, AddressValidation.Request>(request, cancellationToken);
 
 	/// <summary>
 	/// Returns travel distance and time for a matrix of origins and destinations.
@@ -71,7 +98,7 @@ public sealed class GoogleMapsClient :
 	/// <returns>DistanceMatrix.Response</returns>
 	public Task<DistanceMatrix.Response> DistanceMatrixAsync(
 		DistanceMatrix.Request request,
-		CancellationToken cancellationToken = default) => RequestAsync<DistanceMatrix.Response>(request, cancellationToken);
+		CancellationToken cancellationToken = default) => RequestAsync<DistanceMatrix.Response, DistanceMatrix.Request>(request, cancellationToken);
 
 	/// <summary>
 	/// Returns the elevation of points on the Earth.
@@ -107,7 +134,7 @@ public sealed class GoogleMapsClient :
 	/// <returns>Elevation.Response</returns>
 	public Task<Elevation.Response> ElevationAsync(
 		Elevation.Request request,
-		CancellationToken cancellationToken = default) => RequestAsync<Elevation.Response>(request, cancellationToken);
+		CancellationToken cancellationToken = default) => RequestAsync<Elevation.Response, Elevation.Request>(request, cancellationToken);
 
 	/// <summary>
 	/// Returns the latitude and longitude point of an address.
@@ -129,7 +156,7 @@ public sealed class GoogleMapsClient :
 	/// <returns>Geocode.Response</returns>
 	public Task<Geocode.Response> GeocodeAsync(
 		Geocode.Request request,
-		CancellationToken cancellationToken = default) => RequestAsync<Geocode.Response>(request, cancellationToken);
+		CancellationToken cancellationToken = default) => RequestAsync<Geocode.Response, Geocode.Request>(request, cancellationToken);
 
 	//public Task<NearestRoads.Response> NearestRoadsAsync(
 	//	decimal latitude,
@@ -183,7 +210,7 @@ public sealed class GoogleMapsClient :
 	/// <returns>Geocode.Response</returns>
 	public Task<Geocode.Response> ReverseGeocodeAsync(
 		Geocode.Request request,
-		CancellationToken cancellationToken = default) => RequestAsync<Geocode.Response>(request, cancellationToken);
+		CancellationToken cancellationToken = default) => RequestAsync<Geocode.Response, Geocode.Request>(request, cancellationToken);
 
 	/// <summary>
 	/// Returns the time zone and UTC offset for a latitude and longitude point.
@@ -205,7 +232,7 @@ public sealed class GoogleMapsClient :
 	/// <returns></returns>
 	public Task<TimeZone.Response> TimeZoneAsync(
 		TimeZone.Request request,
-		CancellationToken cancellationToken = default) => RequestAsync<TimeZone.Response>(request, cancellationToken);
+		CancellationToken cancellationToken = default) => RequestAsync<TimeZone.Response, TimeZone.Request>(request, cancellationToken);
 
 	//	============================================================================
 	//	Request
@@ -215,37 +242,39 @@ public sealed class GoogleMapsClient :
 		IRequest request,
 		CancellationToken cancellationToken) => _httpClient.GetAsync($"{request.Endpoint}&key={_key}", cancellationToken);
 
-	private Task<HttpResponseMessage> PostAsync(
-		IRequest request,
-		CancellationToken cancellationToken) => _httpClient.PostAsync($"{request.Endpoint}&key={_key}", null, cancellationToken);
-
-	private async Task<T> RequestAsync<T>(
-		IRequest? request,
+	private Task<HttpResponseMessage> PostAsync<TRequest>(
+		TRequest request,
 		CancellationToken cancellationToken)
-		where T : IResponse, new() {
+		where TRequest : IRequest => _httpClient.PostAsJsonAsync($"{request.Endpoint}&key={_key}", request, cancellationToken);
+
+	private async Task<TResponse> RequestAsync<TResponse, TRequest>(
+		TRequest? request,
+		CancellationToken cancellationToken)
+		where TResponse : IResponse, new()
+		where TRequest : IRequest {
 		if (request is null) {
-			return InvalidResponse<T>();
+			return InvalidResponse<TResponse>();
 		}
 
 		if (cancellationToken.IsCancellationRequested) {
-			return CancelledResponse<T>();
+			return CancelledResponse<TResponse>();
 		}
 
 		try {
 			var response = request.Method == HttpMethod.Get
 				? await GetAsync(request, cancellationToken).ConfigureAwait(false)
 				: await PostAsync(request, cancellationToken).ConfigureAwait(false);
-
+			
 			if (!response.Content.Headers.ContentType.MediaType.Contains("application/json")) {
 				var error = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-				return FailedResponse<T>(error);
+				return FailedResponse<TResponse>(error);
 			}
 
-			var succcess = await response.Content.ReadFromJsonAsync<T>(cancellationToken: cancellationToken).ConfigureAwait(false);
+			var succcess = await response.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);
 
 			if (succcess is null) {
-				return FailedResponse<T>("Response is null.");
+				return FailedResponse<TResponse>("Response is null.");
 			}
 
 			succcess.ResponseStatus = response.StatusCode == HttpStatusCode.OK
@@ -259,11 +288,11 @@ public sealed class GoogleMapsClient :
 
 			return succcess;
 		} catch (HttpRequestException) {
-			return FailedResponse<T>();
+			return FailedResponse<TResponse>();
 		} catch (TaskCanceledException) {
-			return TimedOutResponse<T>();
+			return TimedOutResponse<TResponse>();
 		} catch (Exception e) {
-			return FailedResponse<T>($"{e.Message}\n{e.InnerException?.Message}\n{e.StackTrace}");
+			return FailedResponse<TResponse>($"{e.Message}\n{e.InnerException?.Message}\n{e.StackTrace}");
 		}
 	}
 
